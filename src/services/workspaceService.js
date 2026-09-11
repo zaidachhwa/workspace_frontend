@@ -1,0 +1,35 @@
+import axiosInstance from "./axiosInstance";
+
+export const listWorkspacesRequest = async () => {
+  const response = await axiosInstance.get("/workspaces");
+  return response.data.data;
+};
+
+export const listWorkspaceTemplatesRequest = async () => {
+  const response = await axiosInstance.get("/workspace-templates");
+  return response.data.data;
+};
+
+export const createWorkspaceRequest = async (payload) => {
+  const response = await axiosInstance.post("/workspaces", payload);
+  return response.data.data;
+};
+
+export const deleteWorkspaceRequest = async (id) => {
+  await axiosInstance.delete(`/workspaces/${id}`);
+};
+
+export const startWorkspaceRequest = async (id) => {
+  const response = await axiosInstance.post(`/workspaces/${id}/start`);
+  return response.data.data;
+};
+
+export const stopWorkspaceRequest = async (id) => {
+  const response = await axiosInstance.post(`/workspaces/${id}/stop`);
+  return response.data.data;
+};
+
+export const restartWorkspaceRequest = async (id) => {
+  const response = await axiosInstance.post(`/workspaces/${id}/restart`);
+  return response.data.data;
+};
