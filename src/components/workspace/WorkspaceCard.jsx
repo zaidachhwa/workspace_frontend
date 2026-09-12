@@ -8,6 +8,7 @@ import {
   useStartWorkspace,
   useStopWorkspace,
 } from "@/hooks/useWorkspaces";
+import SnapshotPanel from "./SnapshotPanel";
 
 const STATUS_STYLES = {
   running: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400",
@@ -121,6 +122,8 @@ export default function WorkspaceCard({ workspace }) {
           <Trash2 className="h-3.5 w-3.5" /> Delete
         </button>
       </div>
+
+      <SnapshotPanel workspace={workspace} />
     </div>
   );
 }

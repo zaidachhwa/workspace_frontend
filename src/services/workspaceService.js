@@ -33,3 +33,21 @@ export const restartWorkspaceRequest = async (id) => {
   const response = await axiosInstance.post(`/workspaces/${id}/restart`);
   return response.data.data;
 };
+
+export const listSnapshotsRequest = async (id) => {
+  const response = await axiosInstance.get(`/workspaces/${id}/snapshots`);
+  return response.data.data;
+};
+
+export const createSnapshotRequest = async (id) => {
+  const response = await axiosInstance.post(`/workspaces/${id}/snapshots`);
+  return response.data.data;
+};
+
+export const restoreSnapshotRequest = async ({ workspaceId, snapshotId }) => {
+  await axiosInstance.post(`/workspaces/${workspaceId}/snapshots/${snapshotId}/restore`);
+};
+
+export const deleteSnapshotRequest = async ({ workspaceId, snapshotId }) => {
+  await axiosInstance.delete(`/workspaces/${workspaceId}/snapshots/${snapshotId}`);
+};
