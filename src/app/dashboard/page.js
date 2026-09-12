@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LoaderCircle, LogOut } from "lucide-react";
+import Link from "next/link";
+import { LoaderCircle, LogOut, ShieldCheck } from "lucide-react";
 import { useMe, useLogout } from "@/hooks/useAuth";
 import CreateWorkspaceForm from "@/components/workspace/CreateWorkspaceForm";
 import WorkspaceList from "@/components/workspace/WorkspaceList";
@@ -31,12 +32,22 @@ export default function DashboardPage() {
           <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Workspaces</h1>
           <p className="text-sm text-zinc-500">Signed in as {user?.email}</p>
         </div>
-        <button
-          onClick={() => logout.mutate(undefined, { onSuccess: () => router.replace("/login") })}
-          className="flex items-center gap-1.5 rounded-lg border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-900"
-        >
-          <LogOut className="h-4 w-4" /> Log out
-        </button>
+        <div className="flex items-center gap-2">
+          {user?.role === "admin" && (
+            <Link
+              href="/admin"
+              className="flex items-center gap-1.5 rounded-lg border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-900"
+            >
+              <ShieldCheck className="h-4 w-4" /> Admin
+            </Link>
+          )}
+          <button
+            onClick={() => logout.mutate(undefined, { onSuccess: () => router.replace("/login") })}
+            className="flex items-center gap-1.5 rounded-lg border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-900"
+          >
+            <LogOut className="h-4 w-4" /> Log out
+          </button>
+        </div>
       </header>
 
       <CreateWorkspaceForm />
