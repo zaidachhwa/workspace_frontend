@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Plus, LoaderCircle, TriangleAlert } from "lucide-react";
@@ -15,11 +15,21 @@ export default function CreateWorkspaceForm() {
     register,
     handleSubmit,
     reset,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(createWorkspaceSchema),
     defaultValues: { profile: "small", gitRepoUrl: "" },
   });
+
+  // Pre-select the general-purpose template — most people don't need to think
+  // about which one to pick; it's only a deliberate choice for Full Stack.
+  useEffect(() => {
+    if (!templates?.length || getValues("templateId")) return;
+    const defaultTemplate = templates.find((t) => t.name === "General Purpose") ?? templates[0];
+    setValue("templateId", defaultTemplate.id);
+  }, [templates, getValues, setValue]);
 
   const onSubmit = (values) => {
     setGitImportError(null);
