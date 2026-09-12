@@ -9,6 +9,7 @@ import {
   useStopWorkspace,
 } from "@/hooks/useWorkspaces";
 import SnapshotPanel from "./SnapshotPanel";
+import MembersPanel from "./MembersPanel";
 
 const STATUS_STYLES = {
   running: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400",
@@ -40,7 +41,14 @@ export default function WorkspaceCard({ workspace }) {
     <div className="flex flex-col gap-3 rounded-2xl border border-zinc-200 p-5 dark:border-zinc-800">
       <div className="flex items-start justify-between">
         <div>
-          <h3 className="font-medium text-zinc-900 dark:text-zinc-50">{workspace.name}</h3>
+          <h3 className="font-medium text-zinc-900 dark:text-zinc-50">
+            {workspace.name}
+            {!workspace.isOwner && (
+              <span className="ml-2 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-medium text-blue-700 dark:bg-blue-900/40 dark:text-blue-400">
+                Shared with you
+              </span>
+            )}
+          </h3>
           <p className="text-xs text-zinc-500">{workspace.slug}</p>
         </div>
         <span
@@ -110,20 +118,23 @@ export default function WorkspaceCard({ workspace }) {
         >
           <RotateCw className="h-3.5 w-3.5" /> Restart
         </button>
-        <button
-          disabled={busy}
-          onClick={() => {
-            if (confirm(`Delete workspace "${workspace.name}"? This cannot be undone.`)) {
-              remove.mutate(workspace.id);
-            }
-          }}
-          className="ml-auto flex items-center gap-1 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-50 dark:border-red-900 dark:hover:bg-red-950"
-        >
-          <Trash2 className="h-3.5 w-3.5" /> Delete
-        </button>
+        {workspace.isOwner && (
+          <button
+            disabled={busy}
+            onClick={() => {
+              if (confirm(`Delete workspace "${workspace.name}"? This cannot be undone.`)) {
+                remove.mutate(workspace.id);
+              }
+            }}
+            className="ml-auto flex items-center gap-1 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-50 dark:border-red-900 dark:hover:bg-red-950"
+          >
+            <Trash2 className="h-3.5 w-3.5" /> Delete
+          </button>
+        )}
       </div>
 
       <SnapshotPanel workspace={workspace} />
+      <MembersPanel workspace={workspace} />
     </div>
   );
 }

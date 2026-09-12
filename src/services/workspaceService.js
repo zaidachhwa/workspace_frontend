@@ -51,3 +51,17 @@ export const restoreSnapshotRequest = async ({ workspaceId, snapshotId }) => {
 export const deleteSnapshotRequest = async ({ workspaceId, snapshotId }) => {
   await axiosInstance.delete(`/workspaces/${workspaceId}/snapshots/${snapshotId}`);
 };
+
+export const listMembersRequest = async (id) => {
+  const response = await axiosInstance.get(`/workspaces/${id}/members`);
+  return response.data.data;
+};
+
+export const addMemberRequest = async ({ workspaceId, email }) => {
+  const response = await axiosInstance.post(`/workspaces/${workspaceId}/members`, { email });
+  return response.data.data;
+};
+
+export const removeMemberRequest = async ({ workspaceId, memberId }) => {
+  await axiosInstance.delete(`/workspaces/${workspaceId}/members/${memberId}`);
+};
